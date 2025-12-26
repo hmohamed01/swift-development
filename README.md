@@ -79,3 +79,7 @@ xcrun simctl list devices      # List devices
 xcrun simctl boot "iPhone 15"  # Boot simulator
 xcrun simctl install booted ./App.app  # Install app
 ```
+
+## Acknowledgments
+
+This skill was inspired by and builds upon [ios-swift-development](https://github.com/aj-geddes/useful-ai-prompts/tree/main/skills/ios-swift-development) by [@aj-geddes](https://github.com/aj-geddes). The original skill provided a foundation that was expanded with additional reference documentation, helper scripts, and asset templates.
