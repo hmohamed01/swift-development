@@ -1,0 +1,41 @@
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+
+opt_in_rules:
+  - empty_count
+  - missing_docs
+  - closure_spacing
+
+excluded:
+  - Pods
+  - Generated
+  - .build
+
+line_length:
+  warning: 120
+  error: 200
+  ignores_comments: true
+
+type_body_length:
+  warning: 300
+  error: 500
+
+file_length:
+  warning: 500
+  error: 1000
+
+identifier_name:
+  min_length: 2
+  max_length: 50
+  excluded:
+    - id
+    - x
+    - y
+
+custom_rules:
+  no_print:
+    name: "No Print Statements"
+    regex: "print\\("
+    message: "Use proper logging instead of print"
+    severity: warning
