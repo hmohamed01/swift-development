@@ -4,10 +4,18 @@ A Claude Code skill for comprehensive Swift/iOS/macOS development. Provides patt
 
 ## Installation
 
-Copy this directory to your Claude Code skills folder:
+Create the skill directory and copy the required files:
 
 ```bash
-cp -r swift-development ~/.claude/skills/
+mkdir -p ~/.claude/skills/swift-development
+cp SKILL.md ~/.claude/skills/swift-development/
+cp -r scripts references assets ~/.claude/skills/swift-development/
+```
+
+Or as a one-liner from the repo root:
+
+```bash
+mkdir -p ~/.claude/skills/swift-development && cp SKILL.md ~/.claude/skills/swift-development/ && cp -r scripts references assets ~/.claude/skills/swift-development/
 ```
 
 ## Usage
