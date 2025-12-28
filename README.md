@@ -74,6 +74,8 @@ For authoritative reference, this skill points to Apple's official Swift documen
 - **Swift Concurrency**: https://developer.apple.com/documentation/swift/concurrency
 - **Swift Testing**: https://developer.apple.com/documentation/testing
 
+**Live Documentation Fetching**: The skill instructs Claude to use `WebFetch` to retrieve current documentation from Apple's developer site when API accuracy matters—such as exact method signatures, availability annotations, or framework-specific behaviors.
+
 ## Requirements
 
 - macOS with Xcode 15+ (Xcode 16+ for Swift 6 features)
