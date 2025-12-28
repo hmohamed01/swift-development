@@ -155,10 +155,10 @@ enum AppRoute: Hashable {
 
 struct AppView: View {
     @State private var navigationPath = NavigationPath()
-    
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            HomeView()
+            HomeView(path: $navigationPath)
                 .navigationDestination(for: AppRoute.self) { route in
                     switch route {
                     case .itemDetail(let id):
@@ -321,6 +321,14 @@ enum NetworkError: LocalizedError {
         case .notFound: "Not found"
         case .serverError: "Server error"
         case .unknown(let code): "HTTP \(code)"
+        }
+    }
+}
+
+extension URLRequest {
+    mutating func addAuthHeader() {
+        if let token = KeychainManager.shared.getToken() {
+            setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
     }
 }

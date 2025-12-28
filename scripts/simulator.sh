@@ -19,7 +19,7 @@ if ! command -v xcrun &> /dev/null; then
     exit 1
 fi
 
-if ! xcrun simctl &> /dev/null; then
+if ! xcrun simctl help &> /dev/null; then
     echo "Error: simctl is not available. Install Xcode Command Line Tools: xcode-select --install" >&2
     exit 1
 fi

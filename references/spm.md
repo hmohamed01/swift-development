@@ -65,9 +65,8 @@ let package = Package(
         .library(name: "MyLibrary", targets: ["MyLibrary"])
     ],
     targets: [
-        .target(name: "MyLibrary", swiftSettings: [
-            .enableExperimentalFeature("StrictConcurrency")
-        ])
+        .target(name: "MyLibrary")
+        // Swift 6 has strict concurrency by default - no swiftSettings needed
     ]
 )
 ```

@@ -17,7 +17,12 @@ SWIFT_VERSION="5.10"
 
 # Get script directory to find assets
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ASSETS_DIR="$(cd "$SCRIPT_DIR/../assets" && pwd)"
+ASSETS_DIR="$SCRIPT_DIR/../assets"
+if [[ -d "$ASSETS_DIR" ]]; then
+    ASSETS_DIR="$(cd "$ASSETS_DIR" && pwd)"
+else
+    ASSETS_DIR=""  # Assets not available, will use inline configs
+fi
 
 shift
 while [[ $# -gt 0 ]]; do
@@ -83,7 +88,7 @@ Package.resolved
 EOF
 
 # Add SwiftFormat config (use asset if available, otherwise create inline)
-if [[ -f "$ASSETS_DIR/.swiftformat" ]]; then
+if [[ -n "$ASSETS_DIR" && -f "$ASSETS_DIR/.swiftformat" ]]; then
     echo "Using SwiftFormat config from assets..."
     cp "$ASSETS_DIR/.swiftformat" .swiftformat
     # Update swiftversion if different
@@ -109,7 +114,7 @@ EOF
 fi
 
 # Add SwiftLint config (use asset if available, otherwise create inline)
-if [[ -f "$ASSETS_DIR/.swiftlint.yml" ]]; then
+if [[ -n "$ASSETS_DIR" && -f "$ASSETS_DIR/.swiftlint.yml" ]]; then
     echo "Using SwiftLint config from assets..."
     cp "$ASSETS_DIR/.swiftlint.yml" .swiftlint.yml
 else

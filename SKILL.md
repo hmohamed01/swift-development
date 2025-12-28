@@ -328,6 +328,8 @@ import Testing
 
 @Suite("Feature Tests")
 struct FeatureTests {
+    let service = MyService()  // Shared across tests in suite
+
     @Test("Basic calculation")
     func basicCalc() {
         #expect(Calculator().add(2, 3) == 5)
@@ -337,39 +339,40 @@ struct FeatureTests {
     func squares(value: Int) {
         #expect(value * value > 0)
     }
-    
+
     @Test("Async operation")
     func asyncTest() async throws {
         let result = try await service.fetchData()
         #expect(result != nil)
     }
-    
+
     @Test("Throwing function")
     func throwingTest() throws {
         #expect(throws: MyError.invalid) {
             try service.validate("invalid")
         }
     }
-    
-    @Test("Conditional test")
-    func conditionalTest() throws {
-        #require(ProcessInfo.processInfo.environment["CI"] != nil)
-        // Only runs in CI
-        #expect(true)
+
+    @Test("Require precondition")
+    func requireTest() throws {
+        let config = try #require(loadConfig())  // Fails test if nil
+        #expect(config.isValid)
     }
 }
 
-// Custom expectations
-@Test("Custom expectation")
-func customExpectation() {
+// Custom test with multiple expectations
+@Test("Value in range")
+func valueInRange() {
     let value = 42
-    #expect(value, .isGreaterThan(40))
-    #expect(value, .isLessThan(50))
+    #expect(value > 40)
+    #expect(value < 50)
 }
 
-// Test organization
+// Test organization with tags
 @Suite("User Service", .tags(.integration))
 struct UserServiceTests {
+    let service = UserService()
+
     @Test("Create user")
     func createUser() async throws {
         let user = try await service.createUser(name: "Test")
