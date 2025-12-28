@@ -420,6 +420,36 @@ MyApp/
 
 ---
 
+## Official Documentation
+
+For authoritative Swift language and framework reference, use Apple's official documentation:
+
+| Resource | URL |
+|----------|-----|
+| Swift Documentation | https://developer.apple.com/documentation/swift |
+| SwiftUI | https://developer.apple.com/documentation/swiftui |
+| Swift Standard Library | https://developer.apple.com/documentation/swift/swift-standard-library |
+| Swift Concurrency | https://developer.apple.com/documentation/swift/concurrency |
+| Swift Testing | https://developer.apple.com/documentation/testing |
+
+### When to Fetch Documentation
+
+Use `WebFetch` to retrieve content from Apple's official documentation in these situations:
+
+1. **API Details**: When you need exact method signatures, parameters, or return types for Swift or framework APIs
+2. **Framework Features**: When implementing SwiftUI views, concurrency patterns, or other framework-specific features where accuracy matters
+3. **Uncertainty**: When you're unsure about current Swift syntax, availability annotations, or deprecated APIs
+4. **User Questions**: When the user asks about specific Swift APIs, protocols, or framework behavior
+
+**How to fetch**: Use `WebFetch` with the appropriate base URL + the specific type or topic:
+- For a type: `https://developer.apple.com/documentation/swift/array`
+- For SwiftUI views: `https://developer.apple.com/documentation/swiftui/list`
+- For protocols: `https://developer.apple.com/documentation/swift/sendable`
+
+**Example prompt for WebFetch**: "Extract the initializers, properties, and key methods for this type"
+
+---
+
 ## Reference Files
 
 Detailed documentation for specific topics:

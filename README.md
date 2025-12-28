@@ -65,6 +65,15 @@ All scripts include prerequisite checks and improved error handling with helpful
 - `assets/.swiftlint.yml` - SwiftLint configuration
 - `assets/ExportOptions/` - Archive export plist templates (App Store, Ad Hoc, Development)
 
+## Official Documentation
+
+For authoritative reference, this skill points to Apple's official Swift documentation:
+
+- **Swift Documentation**: https://developer.apple.com/documentation/swift
+- **SwiftUI**: https://developer.apple.com/documentation/swiftui
+- **Swift Concurrency**: https://developer.apple.com/documentation/swift/concurrency
+- **Swift Testing**: https://developer.apple.com/documentation/testing
+
 ## Requirements
 
 - macOS with Xcode 15+ (Xcode 16+ for Swift 6 features)
