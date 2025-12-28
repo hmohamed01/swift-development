@@ -32,8 +32,9 @@ Or reference it naturally - Claude will activate the skill when working on Swift
 
 ### Quick Patterns (SKILL.md)
 - SwiftUI with Observable (iOS 17+) and ObservableObject (iOS 13+)
+- Navigation patterns: NavigationStack (iOS 16+), NavigationView (iOS 13-15), coordinator pattern
 - Swift 6 concurrency: async/await, actors, Sendable
-- XCTest and Swift Testing frameworks
+- XCTest and Swift Testing frameworks (with expanded examples)
 - Common xcodebuild and simctl commands
 
 ### Reference Documentation
@@ -51,10 +52,12 @@ Or reference it naturally - Claude will activate the skill when working on Swift
 ### Helper Scripts
 | Script | Purpose |
 |--------|---------|
-| `scripts/new_package.sh` | Create new Swift package with config files |
-| `scripts/run_tests.sh` | Run tests with parallel execution and coverage |
-| `scripts/format_and_lint.sh` | Format and lint Swift code |
-| `scripts/simulator.sh` | Quick simulator management |
+| `scripts/new_package.sh` | Create new Swift package with config files (supports `--swift-version` option) |
+| `scripts/run_tests.sh` | Run tests with parallel execution and coverage (SPM or xcodebuild) |
+| `scripts/format_and_lint.sh` | Format and lint Swift code (SwiftFormat, SwiftLint, swift-format) |
+| `scripts/simulator.sh` | Quick simulator management (boot, install, launch, screenshots, etc.) |
+
+All scripts include prerequisite checks and improved error handling with helpful messages.
 
 ### Asset Templates
 - `assets/Package.swift.template` - Swift package template
