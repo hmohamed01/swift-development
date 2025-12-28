@@ -170,6 +170,74 @@ struct MyView: View {
 }
 ```
 
+### Navigation (iOS 16+)
+
+```swift
+// NavigationStack with programmatic navigation
+struct ContentView: View {
+    @State private var path = NavigationPath()
+    
+    var body: some View {
+        NavigationStack(path: $path) {
+            List {
+                NavigationLink("Item 1", value: 1)
+                NavigationLink("Item 2", value: 2)
+            }
+            .navigationDestination(for: Int.self) { id in
+                DetailView(id: id)
+            }
+        }
+    }
+}
+
+// Navigation with typed paths
+enum Route: Hashable {
+    case detail(Int)
+    case settings
+}
+
+struct AppView: View {
+    @State private var path = NavigationPath()
+    
+    var body: some View {
+        NavigationStack(path: $path) {
+            HomeView()
+                .navigationDestination(for: Route.self) { route in
+                    switch route {
+                    case .detail(let id):
+                        DetailView(id: id)
+                    case .settings:
+                        SettingsView()
+                    }
+                }
+        }
+    }
+}
+
+// Programmatic navigation
+Button("Go to Detail") {
+    path.append(Route.detail(42))
+}
+```
+
+### Navigation (iOS 13-15)
+
+```swift
+// NavigationView with NavigationLink
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            List {
+                NavigationLink(destination: DetailView()) {
+                    Text("Item 1")
+                }
+            }
+            .navigationTitle("Items")
+        }
+    }
+}
+```
+
 ---
 
 ## Swift 6 Concurrency Essentials
@@ -269,6 +337,48 @@ struct FeatureTests {
     func squares(value: Int) {
         #expect(value * value > 0)
     }
+    
+    @Test("Async operation")
+    func asyncTest() async throws {
+        let result = try await service.fetchData()
+        #expect(result != nil)
+    }
+    
+    @Test("Throwing function")
+    func throwingTest() throws {
+        #expect(throws: MyError.invalid) {
+            try service.validate("invalid")
+        }
+    }
+    
+    @Test("Conditional test")
+    func conditionalTest() throws {
+        #require(ProcessInfo.processInfo.environment["CI"] != nil)
+        // Only runs in CI
+        #expect(true)
+    }
+}
+
+// Custom expectations
+@Test("Custom expectation")
+func customExpectation() {
+    let value = 42
+    #expect(value, .isGreaterThan(40))
+    #expect(value, .isLessThan(50))
+}
+
+// Test organization
+@Suite("User Service", .tags(.integration))
+struct UserServiceTests {
+    @Test("Create user")
+    func createUser() async throws {
+        let user = try await service.createUser(name: "Test")
+        #expect(user.id != nil)
+    }
+}
+
+extension Tag {
+    @Tag static var integration: Self
 }
 ```
 

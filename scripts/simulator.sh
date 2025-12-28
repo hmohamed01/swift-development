@@ -13,64 +13,118 @@
 
 set -e
 
+# Check prerequisites
+if ! command -v xcrun &> /dev/null; then
+    echo "Error: xcrun is not available. Install Xcode Command Line Tools: xcode-select --install" >&2
+    exit 1
+fi
+
+if ! xcrun simctl &> /dev/null; then
+    echo "Error: simctl is not available. Install Xcode Command Line Tools: xcode-select --install" >&2
+    exit 1
+fi
+
 CMD="${1:-list}"
 shift || true
 
 case $CMD in
     list)
-        xcrun simctl list devices available
+        if ! xcrun simctl list devices available 2>&1; then
+            echo "Error: Failed to list simulators" >&2
+            exit 1
+        fi
         ;;
 
     boot)
         NAME="${1:?Usage: simulator.sh boot <name>}"
         echo "Booting: $NAME"
-        xcrun simctl boot "$NAME" 2>/dev/null || true
-        open -a Simulator
+        if ! xcrun simctl boot "$NAME" 2>/dev/null; then
+            # Check if already booted or if there's an error
+            if xcrun simctl list devices | grep -q "$NAME.*Booted"; then
+                echo "Simulator '$NAME' is already booted"
+            else
+                echo "Error: Failed to boot simulator '$NAME'" >&2
+                echo "Available simulators:" >&2
+                xcrun simctl list devices available | grep -i "$NAME" || true
+                exit 1
+            fi
+        fi
+        if command -v open &> /dev/null; then
+            open -a Simulator 2>/dev/null || true
+        fi
         ;;
 
     shutdown)
         echo "Shutting down all simulators..."
-        xcrun simctl shutdown all
+        if ! xcrun simctl shutdown all 2>&1; then
+            echo "Warning: Some simulators may not have shut down properly" >&2
+        fi
         ;;
 
     reset)
         echo "Resetting all simulators..."
-        xcrun simctl shutdown all
-        xcrun simctl erase all
+        echo "Warning: This will erase all simulator data!" >&2
+        if ! xcrun simctl shutdown all 2>&1; then
+            echo "Warning: Some simulators may not have shut down properly" >&2
+        fi
+        if ! xcrun simctl erase all 2>&1; then
+            echo "Error: Failed to reset simulators" >&2
+            exit 1
+        fi
         echo "Done!"
         ;;
 
     install)
         APP="${1:?Usage: simulator.sh install <path/to/app>}"
+        if [[ ! -e "$APP" ]]; then
+            echo "Error: App path '$APP' does not exist" >&2
+            exit 1
+        fi
         echo "Installing: $APP"
-        xcrun simctl install booted "$APP"
+        if ! xcrun simctl install booted "$APP" 2>&1; then
+            echo "Error: Failed to install app. Make sure a simulator is booted." >&2
+            exit 1
+        fi
         ;;
 
     launch)
         BUNDLE="${1:?Usage: simulator.sh launch <bundle.id>}"
         echo "Launching: $BUNDLE"
-        xcrun simctl launch booted "$BUNDLE"
+        if ! xcrun simctl launch booted "$BUNDLE" 2>&1; then
+            echo "Error: Failed to launch app with bundle ID '$BUNDLE'" >&2
+            echo "Make sure the app is installed and a simulator is booted." >&2
+            exit 1
+        fi
         ;;
 
     screenshot)
         FILE="${1:-screenshot-$(date +%Y%m%d-%H%M%S).png}"
-        xcrun simctl io booted screenshot "$FILE"
+        if ! xcrun simctl io booted screenshot "$FILE" 2>&1; then
+            echo "Error: Failed to take screenshot. Make sure a simulator is booted." >&2
+            exit 1
+        fi
         echo "Screenshot saved: $FILE"
         ;;
 
     dark)
-        xcrun simctl ui booted appearance dark
+        if ! xcrun simctl ui booted appearance dark 2>&1; then
+            echo "Error: Failed to set dark mode. Make sure a simulator is booted." >&2
+            exit 1
+        fi
         echo "Dark mode enabled"
         ;;
 
     light)
-        xcrun simctl ui booted appearance light
+        if ! xcrun simctl ui booted appearance light 2>&1; then
+            echo "Error: Failed to set light mode. Make sure a simulator is booted." >&2
+            exit 1
+        fi
         echo "Light mode enabled"
         ;;
 
     *)
-        echo "Unknown command: $CMD"
-        echo "Usage: simulator.sh <list|boot|shutdown|reset|install|launch|screenshot|dark|light>"
+        echo "Error: Unknown command: $CMD" >&2
+        echo "Usage: simulator.sh <list|boot|shutdown|reset|install|launch|screenshot|dark|light>" >&2
         exit 1
         ;;
 esac

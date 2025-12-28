@@ -4,11 +4,12 @@
 1. [Observable (iOS 17+)](#observable-ios-17)
 2. [ObservableObject (iOS 13+)](#observableobject-ios-13)
 3. [MVVM Pattern](#mvvm-pattern)
-4. [Network Service](#network-service)
-5. [Keychain Manager](#keychain-manager)
-6. [Core Data](#core-data)
-7. [SwiftData (iOS 17+)](#swiftdata-ios-17)
-8. [Combine Integration](#combine-integration)
+4. [Navigation Patterns](#navigation-patterns)
+5. [Network Service](#network-service)
+6. [Keychain Manager](#keychain-manager)
+7. [Core Data](#core-data)
+8. [SwiftData (iOS 17+)](#swiftdata-ios-17)
+9. [Combine Integration](#combine-integration)
 
 ---
 
@@ -131,6 +132,123 @@ struct UserView: View {
         }
         .task {
             await viewModel.fetchUser(id: UUID())
+        }
+    }
+}
+```
+
+---
+
+## Navigation Patterns
+
+### NavigationStack (iOS 16+)
+
+```swift
+import SwiftUI
+
+// Type-safe navigation with enum
+enum AppRoute: Hashable {
+    case itemDetail(Int)
+    case settings
+    case profile(User)
+}
+
+struct AppView: View {
+    @State private var navigationPath = NavigationPath()
+    
+    var body: some View {
+        NavigationStack(path: $navigationPath) {
+            HomeView()
+                .navigationDestination(for: AppRoute.self) { route in
+                    switch route {
+                    case .itemDetail(let id):
+                        ItemDetailView(id: id)
+                    case .settings:
+                        SettingsView()
+                    case .profile(let user):
+                        ProfileView(user: user)
+                    }
+                }
+        }
+    }
+}
+
+// Programmatic navigation
+struct HomeView: View {
+    @Binding var path: NavigationPath
+    
+    var body: some View {
+        List {
+            Button("Go to Settings") {
+                path.append(AppRoute.settings)
+            }
+            Button("Go to Item 42") {
+                path.append(AppRoute.itemDetail(42))
+            }
+        }
+    }
+}
+
+// Deep linking
+extension AppView {
+    func handleDeepLink(_ url: URL) {
+        // Parse URL and navigate
+        if url.pathComponents.contains("settings") {
+            navigationPath.append(AppRoute.settings)
+        }
+    }
+}
+```
+
+### Coordinator Pattern
+
+```swift
+@MainActor
+class NavigationCoordinator: ObservableObject {
+    @Published var path = NavigationPath()
+    
+    func navigate(to route: AppRoute) {
+        path.append(route)
+    }
+    
+    func pop() {
+        if !path.isEmpty {
+            path.removeLast()
+        }
+    }
+    
+    func popToRoot() {
+        path.removeLast(path.count)
+    }
+}
+
+// Usage in ViewModel
+@Observable
+class HomeViewModel {
+    private let coordinator: NavigationCoordinator
+    
+    init(coordinator: NavigationCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func showDetail(for item: Item) {
+        coordinator.navigate(to: .itemDetail(item.id))
+    }
+}
+```
+
+### NavigationView (iOS 13-15)
+
+```swift
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            List {
+                NavigationLink(destination: DetailView()) {
+                    Text("Item 1")
+                }
+            }
+            .navigationTitle("Items")
         }
     }
 }
