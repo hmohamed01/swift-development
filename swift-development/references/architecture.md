@@ -10,6 +10,7 @@
 7. [Core Data](#core-data)
 8. [SwiftData (iOS 17+)](#swiftdata-ios-17)
 9. [Combine Integration](#combine-integration)
+10. [Project Structure](#project-structure)
 
 ---
 
@@ -516,4 +517,39 @@ class SearchViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 }
+```
+
+---
+
+## Project Structure
+
+### Swift Package
+
+```
+MyPackage/
+├── Package.swift
+├── Sources/MyPackage/
+│   ├── Models/
+│   ├── Services/
+│   └── Utilities/
+└── Tests/MyPackageTests/
+```
+
+### iOS App
+
+```
+MyApp/
+├── MyApp.xcodeproj/
+├── MyApp/
+│   ├── App/
+│   │   └── MyAppApp.swift
+│   ├── Features/
+│   │   ├── Home/
+│   │   └── Settings/
+│   ├── Core/
+│   │   ├── Models/
+│   │   └── Services/
+│   └── Resources/
+├── MyAppTests/
+└── MyAppUITests/
 ```
