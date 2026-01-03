@@ -9,11 +9,29 @@
 
 set -e
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo_step() {
+    echo -e "${GREEN}==>${NC} $1"
+}
+
+echo_warning() {
+    echo -e "${YELLOW}Warning:${NC} $1"
+}
+
+echo_error() {
+    echo -e "${RED}Error:${NC} $1" >&2
+}
+
 # Check prerequisites
 check_command() {
     if ! command -v "$1" &> /dev/null; then
-        echo "Error: $1 is not installed." >&2
-        echo "Install with: $2" >&2
+        echo_error "$1 is not installed."
+        echo "         Install with: $2" >&2
         return 1
     fi
 }
@@ -37,7 +55,7 @@ while [[ $# -gt 0 ]]; do
         --workspace) WORKSPACE="$2"; shift 2 ;;
         --scheme) SCHEME="$2"; shift 2 ;;
         --destination) DESTINATION="$2"; shift 2 ;;
-        *) echo "Error: Unknown option: $1" >&2; echo "Usage: run_tests.sh [--coverage] [--parallel] [--filter <test>] [--verbose] [--xcode] [--workspace <path>] [--scheme <name>] [--destination <dest>]" >&2; exit 1 ;;
+        *) echo_error "Unknown option: $1"; echo "Usage: run_tests.sh [--coverage] [--parallel] [--filter <test>] [--verbose] [--xcode] [--workspace <path>] [--scheme <name>] [--destination <dest>]" >&2; exit 1 ;;
     esac
 done
 
@@ -54,7 +72,7 @@ if $USE_XCODE; then
         if [[ -z "$WORKSPACE" ]]; then
             PROJECT=$(find . -maxdepth 1 -name "*.xcodeproj" 2>/dev/null | head -1)
             if [[ -n "$PROJECT" ]]; then
-                echo "Using project: $PROJECT"
+                echo_step "Using project: $PROJECT"
                 OUTPUT=$(xcodebuild test \
                     -project "$PROJECT" \
                     -scheme "${SCHEME:-$(basename "$PROJECT" .xcodeproj)}" \
@@ -73,7 +91,7 @@ if $USE_XCODE; then
     fi
 
     if [[ -n "$WORKSPACE" ]]; then
-        echo "Using workspace: $WORKSPACE"
+        echo_step "Using workspace: $WORKSPACE"
         OUTPUT=$(xcodebuild test \
             -workspace "$WORKSPACE" \
             -scheme "${SCHEME:-$(basename "$WORKSPACE" .xcworkspace)}" \
@@ -87,8 +105,8 @@ if $USE_XCODE; then
             echo "$OUTPUT"
         fi
     else
-        echo "Error: No workspace or project found." >&2
-        echo "Use --workspace <path> or --scheme <name> to specify a project." >&2
+        echo_error "No workspace or project found."
+        echo "         Use --workspace <path> or --scheme <name> to specify a project." >&2
         exit 1
     fi
 else
@@ -98,9 +116,9 @@ else
     fi
 
     # swift test mode
-    echo "Running: swift test $VERBOSE $PARALLEL $COVERAGE $FILTER"
+    echo_step "Running: swift test $VERBOSE $PARALLEL $COVERAGE $FILTER"
     if ! swift test $VERBOSE $PARALLEL $COVERAGE $FILTER; then
-        echo "Error: Tests failed" >&2
+        echo_error "Tests failed"
         exit 1
     fi
 
@@ -113,4 +131,6 @@ else
 fi
 
 echo ""
-echo "Tests completed!"
+echo -e "${GREEN}========================================${NC}"
+echo -e "${GREEN}  Tests completed!${NC}"
+echo -e "${GREEN}========================================${NC}"
