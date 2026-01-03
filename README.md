@@ -51,12 +51,20 @@ Or reference it naturally - Claude will activate the skill when working on Swift
 ### Helper Scripts
 | Script | Purpose |
 |--------|---------|
-| `scripts/new_package.sh` | Create new Swift package with config files (supports `--swift-version` option) |
+| `scripts/new_package.sh` | Create new Swift package with config files, version warnings, and naming guidance |
 | `scripts/run_tests.sh` | Run tests with parallel execution and coverage (SPM or xcodebuild) |
 | `scripts/format_and_lint.sh` | Format and lint Swift code (SwiftFormat, SwiftLint, swift-format) |
 | `scripts/simulator.sh` | Quick simulator management (boot, install, launch, screenshots, etc.) |
 
-All scripts include prerequisite checks and improved error handling with helpful messages.
+**Features:**
+- **Colored output**: All scripts use color-coded messages (green for steps, yellow for warnings, red for errors)
+- **Smart validation**: `new_package.sh` provides comprehensive warnings for:
+  - Swift/Xcode version compatibility (e.g., Swift 6.0 requires Xcode 16+)
+  - Package naming conventions (PascalCase guidance)
+  - Git repository nesting (suggests using submodules)
+  - Missing tools (SwiftFormat/SwiftLint installation checks)
+- **Robust error handling**: Prerequisite checks with helpful installation instructions
+- **Styled success indicators**: Clear visual feedback when operations complete
 
 ### Asset Templates
 - `assets/Package.swift.template` - Swift package template
