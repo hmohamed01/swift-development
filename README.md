@@ -1,6 +1,6 @@
 # Swift Development Skill
 
-A Claude Code skill for comprehensive Swift/iOS/macOS development. Provides patterns, commands, and tooling for building, testing, and deploying Swift applications.
+A Claude Code skill for comprehensive Swift iOS/macOS development. Provides patterns, commands, and tooling for building, testing, and deploying Swift applications.
 
 ## Installation
 
