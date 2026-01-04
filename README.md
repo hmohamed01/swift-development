@@ -81,7 +81,14 @@ For authoritative reference, this skill points to Apple's official Swift documen
 - **Swift Concurrency**: https://developer.apple.com/documentation/swift/concurrency
 - **Swift Testing**: https://developer.apple.com/documentation/testing
 
-**Live Documentation Fetching**: The skill instructs Claude to use `WebFetch` to retrieve current documentation from Apple's developer site when API accuracy matters—such as exact method signatures, availability annotations, or framework-specific behaviors.
+**Live Documentation Fetching**: The skill instructs Claude to use `WebFetch` to retrieve current documentation. Since Apple's documentation sites are JavaScript SPAs that cannot be fetched programmatically, the skill uses **GitHub-based sources** instead:
+
+- **Swift Testing**: https://github.com/apple/swift-testing
+- **Swift Evolution**: https://github.com/apple/swift-evolution/tree/main/proposals
+- **Swift Compiler Docs**: https://github.com/apple/swift/tree/main/docs
+- **Swift Async Algorithms**: https://github.com/apple/swift-async-algorithms
+
+These sources provide accurate, up-to-date information on Swift language features, testing frameworks, and package APIs.
 
 ## Requirements
 

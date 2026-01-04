@@ -120,31 +120,47 @@ xcrun simctl launch booted com.company.app
 
 ## Official Documentation
 
-For authoritative Swift language and framework reference, use Apple's official documentation:
+### Reference Links (for humans)
+
+These are Apple's official documentation links for manual browsing:
 
 | Resource | URL |
 |----------|-----|
 | Swift Documentation | https://developer.apple.com/documentation/swift |
 | SwiftUI | https://developer.apple.com/documentation/swiftui |
-| Swift Standard Library | https://developer.apple.com/documentation/swift/swift-standard-library |
 | Swift Concurrency | https://developer.apple.com/documentation/swift/concurrency |
 | Swift Testing | https://developer.apple.com/documentation/testing |
 
+> **Note**: Apple's documentation sites are JavaScript SPAs and cannot be fetched programmatically with WebFetch.
+
+### WebFetch-Compatible Sources
+
+Use these GitHub-based sources for live documentation fetching:
+
+| Resource | URL |
+|----------|-----|
+| Swift Testing | https://github.com/apple/swift-testing |
+| Swift Evolution Proposals | https://github.com/apple/swift-evolution/tree/main/proposals |
+| Swift Compiler Docs | https://github.com/apple/swift/tree/main/docs |
+| Swift Standard Library | https://github.com/apple/swift/tree/main/stdlib |
+| Swift Async Algorithms | https://github.com/apple/swift-async-algorithms |
+| Swift Collections | https://github.com/apple/swift-collections |
+
 ### When to Fetch Documentation
 
-Use `WebFetch` to retrieve content from Apple's official documentation in these situations:
+Use `WebFetch` to retrieve documentation from GitHub in these situations:
 
-1. **API Details**: When you need exact method signatures, parameters, or return types for Swift or framework APIs
-2. **Framework Features**: When implementing SwiftUI views, concurrency patterns, or other framework-specific features where accuracy matters
-3. **Uncertainty**: When you're unsure about current Swift syntax, availability annotations, or deprecated APIs
-4. **User Questions**: When the user asks about specific Swift APIs, protocols, or framework behavior
+1. **Swift Testing**: When you need details on `@Test`, `#expect`, `#require`, traits, or parameterized tests
+2. **Swift Evolution**: When checking accepted proposals for new language features
+3. **Framework Details**: When implementing features from Apple's open-source Swift packages
+4. **Uncertainty**: When you're unsure about current API patterns or best practices
 
-**How to fetch**: Use `WebFetch` with the appropriate base URL + the specific type or topic:
-- For a type: `https://developer.apple.com/documentation/swift/array`
-- For SwiftUI views: `https://developer.apple.com/documentation/swiftui/list`
-- For protocols: `https://developer.apple.com/documentation/swift/sendable`
+**How to fetch**: Use `WebFetch` with GitHub URLs:
+- README: `https://github.com/apple/swift-testing`
+- Raw markdown: `https://raw.githubusercontent.com/apple/swift-testing/main/README.md`
+- Specific docs: `https://github.com/apple/swift-evolution/blob/main/proposals/0409-access-level-on-imports.md`
 
-**Example prompt for WebFetch**: "Extract the initializers, properties, and key methods for this type"
+**Example prompt for WebFetch**: "Extract the main features, macros, and usage examples from this documentation"
 
 ---
 
