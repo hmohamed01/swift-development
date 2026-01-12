@@ -1,5 +1,10 @@
 # Swift Development Skill
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Platform](https://img.shields.io/badge/Platform-iOS%20|%20macOS-000000.svg?logo=apple)](https://developer.apple.com/swift/)
+[![Swift](https://img.shields.io/badge/Swift-5.10+-F05138.svg?logo=swift&logoColor=white)](https://swift.org)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet.svg)](https://claude.ai/code)
+
 A Claude Code skill for comprehensive Swift iOS/macOS development. Provides patterns, commands, and tooling for building, testing, and deploying Swift applications.
 
 ## Installation
