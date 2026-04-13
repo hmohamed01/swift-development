@@ -86,14 +86,14 @@ For authoritative reference, this skill points to Apple's official Swift documen
 - **Swift Concurrency**: https://developer.apple.com/documentation/swift/concurrency
 - **Swift Testing**: https://developer.apple.com/documentation/testing
 
-**Live Documentation Fetching**: The skill instructs Claude to use `WebFetch` to retrieve current documentation. Since Apple's documentation sites are JavaScript SPAs that cannot be fetched programmatically, the skill uses **GitHub-based sources** instead:
+**Live Documentation Fetching**: The skill instructs Claude to use `WebFetch` to retrieve current documentation. Since Apple's documentation sites are JavaScript SPAs that cannot be fetched programmatically, the skill uses **raw GitHub markdown URLs** instead:
 
-- **Swift Testing**: https://github.com/apple/swift-testing
-- **Swift Evolution**: https://github.com/apple/swift-evolution/tree/main/proposals
-- **Swift Compiler Docs**: https://github.com/apple/swift/tree/main/docs
-- **Swift Async Algorithms**: https://github.com/apple/swift-async-algorithms
+- **Swift Testing**: `https://raw.githubusercontent.com/apple/swift-testing/main/README.md`
+- **Swift Evolution**: `https://raw.githubusercontent.com/apple/swift-evolution/main/proposals/{NNNN-name}.md`
+- **Swift Async Algorithms**: `https://raw.githubusercontent.com/apple/swift-async-algorithms/main/README.md`
+- **Swift Collections**: `https://raw.githubusercontent.com/apple/swift-collections/main/README.md`
 
-These sources provide accurate, up-to-date information on Swift language features, testing frameworks, and package APIs.
+Regular `github.com` URLs return garbled HTML/JSON — always use `raw.githubusercontent.com` for `WebFetch`. For discovering file names (e.g., proposal numbers), use `WebSearch` instead.
 
 ## Requirements
 

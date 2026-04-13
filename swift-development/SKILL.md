@@ -131,34 +131,68 @@ These are Apple's official documentation links for manual browsing:
 | Swift Concurrency | https://developer.apple.com/documentation/swift/concurrency |
 | Swift Testing | https://developer.apple.com/documentation/testing |
 
-> **Note**: Apple's documentation sites are JavaScript SPAs and cannot be fetched programmatically with WebFetch.
+> **Note**: Apple's documentation sites are JavaScript SPAs and cannot be fetched programmatically with WebFetch. Use GitHub-based sources below instead.
 
-### WebFetch-Compatible Sources
+### WebFetch-Compatible Sources (Raw GitHub URLs)
 
-Use these GitHub-based sources for live documentation fetching:
+Always use `raw.githubusercontent.com` URLs — regular `github.com` URLs return garbled HTML/JSON.
 
-| Resource | URL |
-|----------|-----|
-| Swift Testing | https://github.com/apple/swift-testing |
-| Swift Evolution Proposals | https://github.com/apple/swift-evolution/tree/main/proposals |
-| Swift Compiler Docs | https://github.com/apple/swift/tree/main/docs |
-| Swift Standard Library | https://github.com/apple/swift/tree/main/stdlib |
-| Swift Async Algorithms | https://github.com/apple/swift-async-algorithms |
-| Swift Collections | https://github.com/apple/swift-collections |
+Base URL prefix: `https://raw.githubusercontent.com/apple`
+
+**Swift Testing** (`/swift-testing/main/`):
+
+| Resource | Path |
+|----------|------|
+| README | `README.md` |
+| Defining Tests | `Sources/Testing/Testing.docc/DefiningTests.md` |
+| Organizing Tests | `Sources/Testing/Testing.docc/OrganizingTests.md` |
+| Expectations | `Sources/Testing/Testing.docc/Expectations.md` |
+| Parameterized Testing | `Sources/Testing/Testing.docc/ParameterizedTesting.md` |
+| Traits Overview | `Sources/Testing/Testing.docc/Traits.md` |
+| Trait Reference | `Sources/Testing/Testing.docc/Traits/Trait.md` |
+| Adding Tags | `Sources/Testing/Testing.docc/AddingTags.md` |
+| Adding Comments | `Sources/Testing/Testing.docc/AddingComments.md` |
+| Associating Bugs | `Sources/Testing/Testing.docc/AssociatingBugs.md` |
+| Bug Identifiers | `Sources/Testing/Testing.docc/BugIdentifiers.md` |
+| Attachments | `Sources/Testing/Testing.docc/Attachments.md` |
+| Enabling/Disabling Tests | `Sources/Testing/Testing.docc/EnablingAndDisabling.md` |
+| Limiting Execution Time | `Sources/Testing/Testing.docc/LimitingExecutionTime.md` |
+| Parallelization | `Sources/Testing/Testing.docc/Parallelization.md` |
+| Exit Testing | `Sources/Testing/Testing.docc/exit-testing.md` |
+| Known Issues | `Sources/Testing/Testing.docc/known-issues.md` |
+| Testing Async Code | `Sources/Testing/Testing.docc/testing-asynchronous-code.md` |
+| Testing for Errors | `Sources/Testing/Testing.docc/testing-for-errors-in-swift-code.md` |
+| Migrating from XCTest | `Sources/Testing/Testing.docc/MigratingFromXCTest.md` |
+| Vision & Design | `Documentation/Vision.md` |
+| CLI Debugging | `Documentation/CommandlineDebugging.md` |
+| Environment Variables | `Documentation/EnvironmentVariables.md` |
+
+**Other Swift Packages**:
+
+| Resource | Full Raw URL |
+|----------|-------------|
+| Swift Async Algorithms | `https://raw.githubusercontent.com/apple/swift-async-algorithms/main/README.md` |
+| Swift Collections | `https://raw.githubusercontent.com/apple/swift-collections/main/README.md` |
+
+**For Swift Evolution proposals**, construct the raw URL from the proposal number:
+`https://raw.githubusercontent.com/apple/swift-evolution/main/proposals/NNNN-proposal-name.md`
+
+Example: `https://raw.githubusercontent.com/apple/swift-evolution/main/proposals/0409-access-level-on-imports.md`
+
+**For directory discovery** (finding proposal numbers, doc file names): use `WebSearch` instead of `WebFetch` — directory listings on GitHub are not parseable.
 
 ### When to Fetch Documentation
 
-Use `WebFetch` to retrieve documentation from GitHub in these situations:
+Use `WebFetch` with raw GitHub URLs in these situations:
 
 1. **Swift Testing**: When you need details on `@Test`, `#expect`, `#require`, traits, or parameterized tests
 2. **Swift Evolution**: When checking accepted proposals for new language features
 3. **Framework Details**: When implementing features from Apple's open-source Swift packages
 4. **Uncertainty**: When you're unsure about current API patterns or best practices
 
-**How to fetch**: Use `WebFetch` with GitHub URLs:
-- README: `https://github.com/apple/swift-testing`
-- Raw markdown: `https://raw.githubusercontent.com/apple/swift-testing/main/README.md`
-- Specific docs: `https://github.com/apple/swift-evolution/blob/main/proposals/0409-access-level-on-imports.md`
+**URL conversion rule**: Replace `github.com/{owner}/{repo}/blob/{branch}/` with `raw.githubusercontent.com/{owner}/{repo}/{branch}/`
+
+**Fallback**: If `WebFetch` fails on a raw URL, use `WebSearch` with the query `site:github.com/apple {topic}` to discover the correct file path, then construct the raw URL.
 
 **Example prompt for WebFetch**: "Extract the main features, macros, and usage examples from this documentation"
 
